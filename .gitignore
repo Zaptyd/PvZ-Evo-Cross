@@ -1,0 +1,8 @@
+*.bak
+*.log
+*.swp
+*.yym
+*.gmx
+*.gm81
+.DS_Store
+Thumbs.db

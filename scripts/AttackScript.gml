@@ -1,0 +1,1 @@
+if sprite_index == (asset_get_index(BaseSpr + "Attack")) && image_index > random_range(MinFrameAttack,MaxFrameAttack) && CoolDown <= 0 && !Sleep{with instance_create(x+10,y-4,objPea){SoundManagement(global.PeaSA,0,global.SoundVolume);Lane = other.Lane};Attack--;CoolDown = ((Attack == 0) * argument0) + ((Attack > 0) * argument1);}
