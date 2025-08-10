@@ -32,3 +32,5 @@ global.SoundA[29] = SND_CherryEX;
 global.SoundA[30] = SND_PotatoMEX;
 global.SoundA[31] = SND_DoomSEX;
 global.SoundA[32] = SND_ZPop;
+global.SoundA[33] = SND_SelectSeed;
+global.SoundA[34] = SND_LeaveSeed;

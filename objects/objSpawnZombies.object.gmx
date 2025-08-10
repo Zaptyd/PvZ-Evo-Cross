@@ -25,7 +25,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>WavesDefiner(0,global.Density,1);
+            <string>WavesDefiner(0,global.Density,-1);
 //global.MaxZType = 2;
 ZombieEquivalent = DensityType;
 FlagActive = false;
@@ -120,16 +120,16 @@ randomize();
 if global.WaveZombies &lt; 0{global.WaveZombies += 1;}
 
 
-if CanGenerate &amp;&amp; (WaveZombiesInit &lt;= 6 * DensityType or FlagActive)&amp;&amp; (CoolDown &lt;= 0 or global.WaveZombies &lt;= WaveZombiesInit * 0.3) &amp;&amp; Start{for(i = 0;i &lt; WaveZombiesInit;i++){randomize();if !FlagActive{ActualLane = choose(0,1,2,3,4,5);}
+if (CanGenerate &amp;&amp; (WaveZombiesInit &lt;= 6 * DensityType or FlagActive)&amp;&amp; (CoolDown &lt;= 0 or global.WaveZombies &lt;= WaveZombiesInit * 0.3) &amp;&amp; Start){for(i = 0;i &lt; WaveZombiesInit;i++){randomize();if !FlagActive{ActualLane = choose(0,1,2,3,4,5);}
 else{ActualLane = i mod 6;}
 
 with instance_create(view_wview+SpawnZRange(1),Lane[ActualLane],objZombieParent){
 if other.i &lt; other.WaveZombiesInit-2 &amp;&amp; other.WaveZombiesInit &gt; 3 &amp;&amp; (!other.FlagActive or other.Flags &gt; 1){Defense = GlobalZType(choose(0,1,2,3));global.WaveZombies+= Defense+1;other.i += Defense;}
-else{Defense = GlobalZType(0);global.WaveZombies+= 1;}};if Flags &gt;= MaxFlags{instance_destroy();}}
+else{Defense = GlobalZType(0);global.WaveZombies+= 1;}};if Flags &gt;= MaxFlags &amp;&amp; MaxFlags != -1{instance_destroy();}}
 
 if FlagActive{DensityType+=0.5;WaveZombiesInit = 0;FlagActive = false;}WaveZombiesInit+= DensityType - (WaveZombiesInit &lt;= DensityType * 3) * 0.5;CoolDown = random_range(2000,2030);}
 
-if WaveZombiesInit &gt; (6 * DensityType) &amp;&amp; !FlagActive &amp;&amp; (Flags &lt; MaxFlags or MaxFlags &lt;= -1) &amp;&amp; (CoolDown == 0 or global.WaveZombies &lt;= WaveZombiesInit * 0.5){CanGenerate = false;WaveZombiesInit = 14 * DensityType;if HordeCoolDown == HordeCDStart{HordeCoolDown--;SoundManagement(SpawnSA,0,global.SoundVolume);};HordeCoolDown--;if HordeCoolDown &lt;= 0 &amp;&amp; !FlagActive{Flags++;SoundManagement(FlagSA,0,global.SoundVolume);FlagActive = true;HordeCoolDown = HordeCDStart;CoolDown = 0;CanGenerate = true;}}
+if (WaveZombiesInit &gt; (6 * DensityType) &amp;&amp; !FlagActive &amp;&amp; (Flags &lt; MaxFlags or MaxFlags == -1) &amp;&amp; (CoolDown == 0 or global.WaveZombies &lt;= WaveZombiesInit * 0.5)){CanGenerate = false;WaveZombiesInit = 14 * DensityType;if HordeCoolDown == HordeCDStart{HordeCoolDown--;SoundManagement(WarningSA,0,global.SoundVolume);};HordeCoolDown--;if HordeCoolDown &lt;= 0 &amp;&amp; !FlagActive{Flags++;SoundManagement(FlagSA,0,global.SoundVolume);FlagActive = true;HordeCoolDown = HordeCDStart;CoolDown = 0;CanGenerate = true;}}
 //LawnMowersActivesArray(4,global.MowerActive[i] - (global.MowerActive[i] &gt; 0))
 </string>
           </argument>
@@ -153,7 +153,7 @@ if WaveZombiesInit &gt; (6 * DensityType) &amp;&amp; !FlagActive &amp;&amp; (Fla
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_text_colour(view_xview+50,60,Flags,c_white,c_white,c_white,c_white,1)
+            <string>//draw_text_colour(view_xview+50,60,Flags,c_white,c_white,c_white,c_white,1)
 </string>
           </argument>
         </arguments>

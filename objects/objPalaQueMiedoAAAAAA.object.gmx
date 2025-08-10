@@ -28,9 +28,11 @@
             <string>Active = false;
 image_speed = 0;
 Img2 = 0;
-ystart = y;
+ystart = view_yview[0]+20;
+y = ystart;
 xstart = x;
 ShovelSA = 10;
+
 </string>
           </argument>
         </arguments>
@@ -53,7 +55,9 @@ ShovelSA = 10;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if Active{x = mouse_x;y = mouse_y;image_index = 1;}
+            <string>y = view_yview[0]+20-60 * global.Cutscene
+
+if Active{x = mouse_x;y = mouse_y;image_index = 1;}
 //while !Active &amp;&amp; xstart != x{x = xstart;y = ystart;image_index = 0;}
 </string>
           </argument>
@@ -129,9 +133,8 @@ image_index = 0;
             <kind>1</kind>
             <string>if !Active{SoundManagement(ShovelSA,0,global.SoundVolume);audio_sound_pitch(global.SoundA[ShovelSA],1);}
 
-Active = (Active == false);
-
 if !Active &amp;&amp; !place_meeting(x,y,objCommonPlantParent){
+Active = true;
 Img2 = 0;
 x = xstart;
 y = ystart;
@@ -191,13 +194,17 @@ draw_self();}
             <kind>1</kind>
             <string>if !Active{audio_play_sound(SND_Shovel,1,0);audio_sound_pitch(SND_Shovel,1);}
 
-Active = (Active == false);
 
 if !Active{
+Active = true;
 Img2 = 0;
 x = xstart;
 y = ystart;
 image_index = 0;}
+else
+{
+Active = false;
+}
 if x == xstart &amp;&amp; y == ystart{Img2 = ((Active == false) - 1) + ((Active == true) * 3)};
 
 //if x == xstart &amp;&amp; y == ystart{

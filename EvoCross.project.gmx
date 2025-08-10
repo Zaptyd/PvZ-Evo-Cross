@@ -8,6 +8,9 @@
   </NewExtensions>
   <sounds name="sound">
     <sound>sound\SND_ZPop</sound>
+    <sound>sound\SND_LeaveSeed</sound>
+    <sound>sound\SND_SelectSeed</sound>
+    <sound>sound\BGM_CYS</sound>
     <sound>sound\SND_DoomSEX</sound>
     <sound>sound\SND_DirtR</sound>
     <sound>sound\SND_PotatoMEX</sound>
@@ -44,11 +47,14 @@
   </sounds>
   <sprites name="sprites">
     <sprite>sprites\sprBush</sprite>
+    <sprite>sprites\sprite125</sprite>
+    <sprite>sprites\sprMapitapedorrouwu</sprite>
+    <sprite>sprites\sprite153</sprite>
     <sprite>sprites\sprCYSBG</sprite>
     <sprite>sprites\sprCYS</sprite>
     <sprite>sprites\sprHello</sprite>
+    <sprite>sprites\sprite130</sprite>
     <sprite>sprites\sprFlowers</sprite>
-    <sprite>sprites\sprLeaf</sprite>
     <sprite>sprites\sprBlackPixel</sprite>
     <sprite>sprites\sprProjectileMask</sprite>
     <sprite>sprites\sprFSButton</sprite>
@@ -59,6 +65,8 @@
         <sprites name="Particles and Projectiles">
           <sprite>sprites\sprSporeV</sprite>
           <sprite>sprites\sprSpore</sprite>
+          <sprite>sprites\sprSporeFume</sprite>
+          <sprite>sprites\sprPuffShroom</sprite>
         </sprites>
         <sprites name="Evos">
           <sprite>sprites\sprPuffShroomEvo2Sleep</sprite>
@@ -67,35 +75,49 @@
           <sprite>sprites\sprPuffShroomEvo2Scared</sprite>
           <sprite>sprites\sprPuffShroomEvo2Attack</sprite>
         </sprites>
+        <sprite>sprites\sprFumeShroomAttack2</sprite>
+        <sprite>sprites\sprFumeShroomAttack</sprite>
+        <sprite>sprites\sprFumeShroomSleep</sprite>
+        <sprite>sprites\sprFumeShroom</sprite>
         <sprite>sprites\sprPuffShroomSleep</sprite>
-        <sprite>sprites\sprPuffShroom</sprite>
         <sprite>sprites\sprSunShroom</sprite>
         <sprite>sprites\sprPuffShroomAttack</sprite>
       </sprites>
       <sprites name="Day">
         <sprite>sprites\sprChomperSleep</sprite>
         <sprite>sprites\sprChomperAttack</sprite>
+        <sprite>sprites\sprSpikeweed</sprite>
+        <sprite>sprites\sprSpikeweedSleep</sprite>
+        <sprite>sprites\sprSpikeweedAttack</sprite>
         <sprite>sprites\sprChomper</sprite>
         <sprite>sprites\sprChomperEat1</sprite>
         <sprites name="Peas">
+          <sprite>sprites\sprCabbagePult</sprite>
           <sprite>sprites\sprPeashooterSleep</sprite>
           <sprite>sprites\sprRepeater</sprite>
           <sprite>sprites\sprPeashooterEvo2</sprite>
+          <sprite>sprites\sprPeashooterEvo2Sleep</sprite>
           <sprite>sprites\sprPeashooterEvo2Attack</sprite>
           <sprite>sprites\sprSeedsPeashooterFlip</sprite>
+          <sprite>sprites\sprite122</sprite>
           <sprite>sprites\sprPeashooter</sprite>
           <sprite>sprites\sprPeashooterEvo1Attack</sprite>
+          <sprite>sprites\sprPeashooterEvo1Sleep</sprite>
           <sprite>sprites\sprPeashooterEvo1</sprite>
+          <sprite>sprites\sprPeashooterEvo1Exception</sprite>
+          <sprite>sprites\sprRepeaterSleep</sprite>
           <sprite>sprites\sprPeashooterAttack</sprite>
           <sprite>sprites\sprRepeaterAttack</sprite>
         </sprites>
         <sprite>sprites\sprSunflowerEvo2</sprite>
         <sprite>sprites\sprSunflowerSleep</sprite>
         <sprite>sprites\sprCherryBombSleep</sprite>
+        <sprite>sprites\sprCherryBombC</sprite>
         <sprite>sprites\sprCherryBomb</sprite>
         <sprite>sprites\sprSeedsSunflowerFlip</sprite>
         <sprite>sprites\sprSunflowerEvo1Sun</sprite>
         <sprite>sprites\sprPotatoMine1</sprite>
+        <sprite>sprites\sprPotatoMineC</sprite>
         <sprite>sprites\sprite29</sprite>
         <sprite>sprites\sprSunflowerEvo2Sun</sprite>
         <sprite>sprites\sprSunflower</sprite>
@@ -103,6 +125,7 @@
         <sprite>sprites\sprSunflowerEvo1</sprite>
         <sprite>sprites\sprWallnut</sprite>
         <sprite>sprites\sprWallnut3</sprite>
+        <sprite>sprites\sprWallnutC</sprite>
         <sprite>sprites\sprPotatoMine3</sprite>
         <sprite>sprites\sprPotatoMineSleep</sprite>
         <sprite>sprites\sprPotatoMine2Sleep</sprite>
@@ -132,19 +155,32 @@
       </sprites>
       <sprite>sprites\sprSun</sprite>
       <sprite>sprites\sprZzz</sprite>
+      <sprite>sprites\sprPriceBand</sprite>
+      <sprite>sprites\sprite113</sprite>
+      <sprite>sprites\sprite119</sprite>
+      <sprite>sprites\sprite120</sprite>
       <sprite>sprites\sprSun2</sprite>
       <sprite>sprites\sprSeeds</sprite>
+      <sprite>sprites\sprSeed</sprite>
+      <sprite>sprites\sprEvoSeed</sprite>
+      <sprite>sprites\sprite114</sprite>
     </sprites>
-    <sprite>sprites\sprite27</sprite>
-    <sprite>sprites\sprNumbersRed</sprite>
-    <sprite>sprites\sprNumbersEvo</sprite>
+    <sprite>sprites\sprite129</sprite>
+    <sprites name="HUD">
+      <sprite>sprites\sprSunBank1</sprite>
+      <sprite>sprites\sprSunBank2</sprite>
+      <sprite>sprites\sprLeaf</sprite>
+    </sprites>
     <sprite>sprites\sprNumbers</sprite>
+    <sprite>sprites\sprNumbersEvo</sprite>
+    <sprite>sprites\sprNumbersRed</sprite>
     <sprite>sprites\sprPala</sprite>
     <sprite>sprites\sprBucket</sprite>
     <sprite>sprites\sprZombieHead</sprite>
     <sprite>sprites\sprite2</sprite>
     <sprite>sprites\sprCone</sprite>
     <sprite>sprites\sprZombieDying</sprite>
+    <sprite>sprites\sprite143</sprite>
     <sprite>sprites\sprZombieHand</sprite>
     <sprite>sprites\sprToughness</sprite>
     <sprite>sprites\sprite19</sprite>
@@ -152,16 +188,20 @@
     <sprite>sprites\sprZombieEating</sprite>
     <sprite>sprites\sprZombieEatingB</sprite>
     <sprite>sprites\sprite11</sprite>
+    <sprite>sprites\sprite152</sprite>
     <sprite>sprites\sprZombie</sprite>
+    <sprite>sprites\sprZombieHandMove</sprite>
     <sprite>sprites\sprZombieMask</sprite>
+    <sprite>sprites\sprite112</sprite>
+    <sprite>sprites\sprZombieBOld</sprite>
     <sprite>sprites\sprZombieB</sprite>
     <sprite>sprites\sprite12</sprite>
     <sprite>sprites\sprite1</sprite>
-    <sprite>sprites\sprite22</sprite>
     <sprite>sprites\sprSeedsFlip</sprite>
     <sprite>sprites\sprite44</sprite>
     <sprite>sprites\sprPeashooterOC</sprite>
     <sprite>sprites\sprPlantParent</sprite>
+    <sprite>sprites\sprGroundPlantParent</sprite>
     <sprite>sprites\sprChomperAttackV</sprite>
     <sprite>sprites\sprDetector</sprite>
     <sprite>sprites\sprExplosion1x1</sprite>
@@ -170,7 +210,10 @@
     <sprite>sprites\sprPotatoMineActiveM</sprite>
     <sprite>sprites\sprite79</sprite>
     <sprite>sprites\sprLawnMower</sprite>
-    <sprite>sprites\sprite71</sprite>
+    <sprite>sprites\sprGUIButtons</sprite>
+    <sprite>sprites\sprite127</sprite>
+    <sprite>sprites\sprite135</sprite>
+    <sprite>sprites\sprite151</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\background7</background>
@@ -183,19 +226,25 @@
   </backgrounds>
   <paths name="paths"/>
   <scripts name="scripts">
-    <script>scripts\EvoCoztDefiner.gml</script>
-    <script>scripts\EvoForm.gml</script>
+    <script>scripts\SetToughnessandDensity.gml</script>
     <script>scripts\PauzeScript.gml</script>
     <script>scripts\MusicArray.gml</script>
+    <script>scripts\EvoForm.gml</script>
     <script>scripts\SoundsArray.gml</script>
     <script>scripts\VolumeNew.gml</script>
     <script>scripts\GlobalSettings.gml</script>
     <script>scripts\RecurrentSoundsVar.gml</script>
+    <script>scripts\SongManar.gml</script>
+    <script>scripts\TxtGetDescription.gml</script>
+    <script>scripts\IniGetPlantValues.gml</script>
+    <script>scripts\SeedMatrix.gml</script>
+    <script>scripts\HitSndList.gml</script>
     <script>scripts\LawnMowersActivesArray.gml</script>
     <script>scripts\NoMowerSpawn.gml</script>
     <script>scripts\draw_self_ext.gml</script>
     <scripts name="ZombieS">
       <script>scripts\ScriptLaneDetect.gml</script>
+      <script>scripts\ZombieHitSNDManagement.gml</script>
       <script>scripts\GlobalZType.gml</script>
       <script>scripts\SpawnZRange.gml</script>
       <script>scripts\SetZombie.gml</script>
@@ -203,30 +252,40 @@
     </scripts>
     <scripts name="PlantS">
       <script>scripts\SetOwnDayAlpha.gml</script>
+      <script>scripts\HitSNDManagement.gml</script>
       <script>scripts\AttackScript.gml</script>
+      <script>scripts\ObjMovementDiff.gml</script>
       <script>scripts\DayTimeReferenced.gml</script>
+      <script>scripts\EvoCoztDefiner.gml</script>
+      <script>scripts\PlantDrawerException.gml</script>
       <script>scripts\SoundManagement.gml</script>
       <script>scripts\GetOwnDayAlpha.gml</script>
-      <script>scripts\SongManar.gml</script>
+      <script>scripts\GetGroundPlants.gml</script>
+      <script>scripts\SetSeedDrawPosition.gml</script>
+      <script>scripts\YController.gml</script>
       <script>scripts\MinPlant.gml</script>
       <script>scripts\SetPlant.gml</script>
       <script>scripts\HealthArray.gml</script>
       <script>scripts\AttackScriptExt.gml</script>
+      <script>scripts\GetEvoSeedBG.gml</script>
       <script>scripts\MinPlantXDizfScript.gml</script>
       <script>scripts\PlantsIDDefiner.gml</script>
     </scripts>
   </scripts>
+  <shaders name="shaders">
+    <shader type="GLSLES">shaders\sh_outline.shader</shader>
+  </shaders>
   <fonts name="fonts">
-    <font>fonts\font0</font>
+    <font>fonts\FntCYS</font>
   </fonts>
   <objects name="objects">
+    <object>objects\objPlantDrawer</object>
+    <object>objects\object62</object>
     <object>objects\objCYS</object>
     <object>objects\objVar</object>
     <object>objects\objSunVar</object>
     <object>objects\objSongDefiner</object>
-    <object>objects\objSeeds</object>
     <object>objects\object41</object>
-    <object>objects\objDetector</object>
     <object>objects\objDetectorMid</object>
     <object>objects\objPalaQueMiedoAAAAAA</object>
     <object>objects\objSun</object>
@@ -239,13 +298,17 @@
     <object>objects\objLawnMower</object>
     <object>objects\objLawnMowerHitbox</object>
     <object>objects\objProjectileParent</object>
+    <object>objects\object55</object>
     <object>objects\objSpawnZombies</object>
+    <object>objects\objCamera</object>
     <object>objects\objZombieHead</object>
     <object>objects\object33</object>
     <object>objects\objTimeManager</object>
+    <object>objects\objGlobalManager</object>
     <object>objects\objZombieHand</object>
     <objects name="Test">
       <object>objects\objTestArrow</object>
+      <object>objects\objTurbo</object>
       <object>objects\object36</object>
       <object>objects\objTestArrow2</object>
       <object>objects\objDensity</object>
@@ -256,11 +319,15 @@
     <object>objects\objPotatoMineDamage</object>
     <objects name="Plants">
       <object>objects\objPuffShroom</object>
+      <object>objects\objFumeShroom</object>
+      <object>objects\objSeeds</object>
       <object>objects\objChompz</object>
       <object>objects\objChomper</object>
       <object>objects\objGenericParticle</object>
       <object>objects\objCherryBomb</object>
       <object>objects\objPeashooterEvo1</object>
+      <object>objects\objGroundPlantParent</object>
+      <object>objects\objSpikeweed</object>
       <object>objects\objIceParticle</object>
       <object>objects\objPeashooterEvo2</object>
       <object>objects\objWallnut</object>
@@ -270,6 +337,7 @@
       <object>objects\objSunPlantParent</object>
       <object>objects\objAttackerPlantParent</object>
       <object>objects\objAttackerMusParent</object>
+      <object>objects\objSunMusParent</object>
       <object>objects\objInstaParent</object>
       <object>objects\objSunflower</object>
       <object>objects\objSunflowerEvo1</object>
@@ -282,6 +350,7 @@
   <rooms name="rooms">
     <room>rooms\room2</room>
     <room>rooms\room5</room>
+    <room>rooms\room6</room>
     <room>rooms\room4</room>
     <room>rooms\room1</room>
     <room>rooms\room3</room>

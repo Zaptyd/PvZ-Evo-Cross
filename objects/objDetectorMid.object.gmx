@@ -124,7 +124,7 @@ if hspeed == 0 &amp;&amp; !place_meeting(x+3,y-0.1,objZombieParent) or x &gt; vi
           <argument>
             <kind>1</kind>
             <string>draw_self();
-draw_text(x,y,global.LaneDetect[Lane]);
+//draw_text(x,y,global.LaneDetect[Lane]);
 </string>
           </argument>
         </arguments>

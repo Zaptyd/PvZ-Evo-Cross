@@ -27,6 +27,7 @@
             <kind>1</kind>
             <string>//SetPlant(6,0,1,6,50,100,5,1);
 SpecialValueAn = 0.02;
+IsFire = true;
 </string>
           </argument>
         </arguments>
@@ -53,7 +54,7 @@ SpecialValueAn = 0.02;
 //image_speed = BaseIS + (sprite_index == (asset_get_index(BaseSpr + "Attack"))) * (0.1 + (Attack &gt; 1) * 0.2);
 MinFrameAttack = 2;
 MaxFrameAttack = 3;
-AttackScriptExt(global.FPeaSA,sprFirePea,"FirePeaV",global.AvAttack1CD+FireAttCD,global.AvAttackMCD+FireAttCD,global.FirePeaDamage,true,-5)
+AttackScriptExt(global.FPeaSA,sprFirePea,"FirePeaV",global.AvAttack1CD+FireAttCD,global.AvAttackMCD+FireAttCD,global.FirePeaDamage,other.IsFire,-5)
 //if sprite_index == asset_get_index(BaseSpr + "Attack") &amp;&amp; image_index &gt; random_range(MinFrameAttack,MaxFrameAttack) &amp;&amp; CoolDown &lt;= 0{with instance_create(x+10,y-4,objPea){audio_play_sound(,1,0);Lane = other.Lane;sprite_index = sprFirePea;DestroySprite = "FirePeaV";angle = 0;image_speed = 0.25;};Attack--;CoolDown = ((Attack == 0) * 50) + ((Attack &gt; 0) * 2);}
 </string>
           </argument>
@@ -88,10 +89,16 @@ FireFx = -(image_index &gt;= 1 &amp;&amp; image_index &lt; 2) + (image_index &gt
 FireFy = -((image_index &gt;= 1 &amp;&amp; image_index &lt; 2) + (image_index &gt;= 2 &amp;&amp; image_index &lt; 3) + (image_index &gt;= 5 &amp;&amp; image_index &lt; 6) + (image_index &gt;= 6 &amp;&amp; image_index &lt; 7));
 }
 
-if (sprite_index != asset_get_index(BaseSpr))
+if (sprite_index != asset_get_index(BaseSpr) &amp;&amp; sprite_index != asset_get_index(BaseSpr + "Sleep"))
 {
 FireFx = -(image_index &gt;= 1 &amp;&amp; image_index &lt; 2) + ((image_index &gt;= 3 &amp;&amp; image_index &lt; 4) * 2) + ((image_index &gt;= 4 &amp;&amp; image_index &lt; 5));
 FireFy = 0;
+}
+
+if (sprite_index == asset_get_index(BaseSpr + "Sleep"))
+{
+FireFx = 0;
+FireFy = (image_index &gt;= 1 &amp;&amp; image_index &lt; 3);
 }
 </string>
           </argument>
@@ -117,7 +124,7 @@ FireFy = 0;
             <kind>1</kind>
             <string>draw_sprite(sprPeashooterEvo1Fire,FireF,x-9+FireFx,y-12+FireFy);
 draw_self();
-draw_self_ext(image_index,MoveShape,0,image_xscale,image_yscale,0,DayColour,global.ShadeAlpha); 
+//draw_self_ext(image_index,MoveShape,0,image_xscale,image_yscale,0,DayColour,global.ShadeAlpha); 
 </string>
           </argument>
         </arguments>

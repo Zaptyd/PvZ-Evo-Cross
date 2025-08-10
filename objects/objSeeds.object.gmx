@@ -3,7 +3,7 @@
   <spriteName>sprSeeds</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>-1</depth>
+  <depth>-3</depth>
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -25,23 +25,41 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>Debug = false;
-MinPlant(5);
-PlantYLimit = view_hview+view_yview-global.YGrid;
-PlantXLimit = view_wview+view_xview-34;
+            <string>SelectSND = 33;
+LeaveSND = 34;
+Pos = 0;
+
+for(var i=0;i &lt;= global.SeedSlots;i++)
+{
+global.FirstSeedX[i] = view_xview+83+sprite_get_width(global.SeedSlotSprite) * (i-1);
+}
+
+IsFloating = false;
+IsSelected = false;
+uPixelH = shader_get_uniform(sh_outline,"pixelH");
+uPixelW = shader_get_uniform(sh_outline,"pixelW");
+//TexelW = texture_get_texel_width(sprite_get_texture(sprPeashooter,0));
+//TexelH = texture_get_texel_height(sprite_get_texture(sprPeashooter,0));
+CoolType = 0;
+Debug = false;
+//PlantYLimit = view_hview+view_yview-global.YGrid;
+//PlantXLimit = view_wview+view_xview-34;
 MinPlantXDif = 0;
 PackW = 30;
+if !global.Cutscene{global.PlantYLimit = view_hview+view_yview-global.YGrid;
+global.PlantXLimit = view_wview+view_xview-34;
+MinPlant(5);}
 PackH = 37;
 NoPlantSA = 6;
 SeedSA = 8;
 PlantedSA = 9; 
 PlantsIDDefiner();
-alarm[0] = 2;
+alarm[0] = 3;
 Start = false;
 Active = false;
 EvoType = 2;
 GenericFlip = sprSeedsFlip;
-Font = font_add_sprite(sprNumbers,ord("0"),1,1);
+Font = font_add_sprite(sprNumbers,ord("0"),1,0);
 ActualPlant = 0;
 global.Selected = false;
 Evolved = 0;
@@ -53,6 +71,11 @@ SunVarObj = objSunVar;
 EvoCostInit = 0;
 Evo = "";
 CanEvo = false;
+if global.Cutscene
+{
+xstart = x;
+ystart = y;
+}
 </string>
           </argument>
         </arguments>
@@ -98,10 +121,22 @@ CanEvo = false;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>CoolStart = CoolDown[CoolType];
+            <string>if !global.Cutscene{
+CanEvo = IsEvoAllowed[ActualPlant];
+CoolType = CoolMed[ActualPlant];
+CoolStart = CoolDown[CoolType];
+}
+
+else{alarm[0] = 10;CoolType = 0;CoolStart = 0;CoolDown[CoolType] = 0;}
+
 if PlantID[ActualPlant] == "Sunflower"{CoolDown[CoolType] = 0;}
 Start = true;
 EvoCostPrev = EvoForm(ActualPlant);
+uPixelH = shader_get_uniform(sh_outline,"pixelH");
+uPixelW = shader_get_uniform(sh_outline,"pixelW");
+//TexelW = texture_get_texel_width(sprite_get_texture("spr" + PlantID[ActualPlant],0));
+//TexelH = texture_get_texel_height(sprite_get_texture("spr" + PlantID[ActualPlant],0));
+
 </string>
           </argument>
         </arguments>
@@ -125,10 +160,13 @@ EvoCostPrev = EvoForm(ActualPlant);
           <argument>
             <kind>1</kind>
             <string>if image_speed &lt; 0 &amp;&amp; image_index &lt;= 0.2 &amp;&amp; sprite_index == GenericFlip{Evo = "";sprite_index = sprSeeds;image_speed = 0;Evolved = false;Start = true;EvoCostPrev = EvoCost;EvoCost = EvoCostInit;}
+var Dpt;
 
 CoolDown[CoolType] -= (CoolDown[CoolType] &gt; 0);
 
-if !Active{depth = -1;}else{depth = -9;}
+Dpt = -3-6*(Active)+(-111 * global.Cutscene);
+
+depth = Dpt;
 
 if Start
 {
@@ -138,8 +176,70 @@ image_index = ActualPlant;
 if global.Minigame{instance_destroy();}
 
 MinPlantXDizfScript(mouse_x);
-hspeed = SunVarObj.hspeed;
+if global.SeedsChoosed &amp;&amp; global.SunBankRequired{hspeed = SunVarObj.hspeed;}
 if (SunCost[ActualPlant] + EvoCost) &gt; global.Sun or sprite_index == GenericFlip{Active = false;}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if global.Cutscene{
+
+if (!IsFloating &amp;&amp; (!place_meeting(global.FirstSeedX[Pos]-30,global.SeedBY,objSeeds)) &amp;&amp; y == global.SeedBY &amp;&amp; x &gt; global.FirstSeedX[1]){Pos--;x = global.FirstSeedX[Pos];}
+
+
+if (y != ystart &amp;&amp; y &gt;= ystart-15 &amp;&amp; y &lt;= ystart+10 &amp;&amp; !IsSelected &amp;&amp; IsFloating){IsFloating = false;x = xstart;y=ystart;move_towards_point(x,y,0);Pos = 0;}
+
+if (y != global.SeedBY &amp;&amp; y &gt;= global.SeedBY-10 &amp;&amp; y &lt;= global.SeedBY+15 &amp;&amp; IsSelected &amp;&amp; IsFloating){IsFloating = false;x = global.FirstSeedX[global.FreeSeedSlot];y=global.SeedBY;move_towards_point(x,y,0);}
+
+if (IsFloating &amp;&amp; IsSelected &amp;&amp; y != global.SeedBY){
+move_towards_point(global.FirstSeedX[global.FreeSeedSlot],global.SeedBY,25);
+}
+
+if (IsFloating &amp;&amp; !IsSelected &amp;&amp; x != xstart){
+move_towards_point(xstart,ystart,20);
+}
+
+if global.SeedsChoosed{global.FirstSeedX[Pos] = view_xview+83+sprite_get_width(global.SeedSlotSprite) * (Pos-1);x = global.FirstSeedX[Pos];}
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="4" ename="objCYS">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if other.vspeed != 0{instance_destroy();}
 </string>
           </argument>
         </arguments>
@@ -185,17 +285,46 @@ if (SunCost[ActualPlant] + EvoCost) &gt; global.Sun or sprite_index == GenericFl
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if Active &amp;&amp; mouse_x &gt; MinPlantX &amp;&amp; global.Sun &gt;= (SunCost[ActualPlant] + EvoCost) &amp;&amp; mouse_y &gt; global.YGrid &amp;&amp; mouse_y &lt; PlantYLimit &amp;&amp; mouse_x &lt; PlantXLimit{
-if !Evolved &amp;&amp; !place_meeting(floor((mouse_x)/global.XGrid)*global.XGrid+15-MinPlantXDif,floor((mouse_y)/global.YGrid)*global.YGrid+22,objCommonPlantParent){SoundManagement(PlantedSA,0,global.SoundVolume);audio_sound_pitch(global.SoundA[PlantedSA],1);instance_create(mouse_x,mouse_y,asset_get_index("obj" + PlantID[ActualPlant]));global.Sun -= SunCost[ActualPlant];CoolDown[CoolType] = CoolStart;Active = false;
-global.Selected = false;}
-else if place_meeting(floor((mouse_x)/global.XGrid)*global.XGrid+14-MinPlantXDif,floor((mouse_y)/global.YGrid)*global.YGrid+22,asset_get_index("obj" + PlantID[ActualPlant])) &amp;&amp; Evolved &gt; 0{
-SoundManagement(PlantedSA,0,global.SoundVolume);audio_sound_pitch(global.SoundA[PlantedSA],1.2);instance_create(mouse_x,mouse_y,asset_get_index("obj" + PlantID[ActualPlant] + "Evo" + string(EvoType)));global.Sun -= SunCost[ActualPlant] + EvoCost;CoolDown[CoolType] = CoolStart;Active = false;
+            <string>if Active &amp;&amp; mouse_x &gt; global.MinPlantX &amp;&amp; global.Sun &gt;= (SunCost[ActualPlant] + EvoCost) &amp;&amp; mouse_y &gt; global.YGrid &amp;&amp; mouse_y &lt; global.PlantYLimit &amp;&amp; mouse_x &lt; global.PlantXLimit{
+if !Evolved &amp;&amp; !place_meeting(floor((mouse_x)/global.XGrid)*global.XGrid+15-MinPlantXDif,floor((mouse_y)/global.YGrid)*global.YGrid+22,objCommonPlantParent){
+SoundManagement(PlantedSA,0,global.SoundVolume);
+audio_sound_pitch(global.SoundA[PlantedSA],1);
+instance_create(mouse_x,mouse_y,asset_get_index("obj" + PlantID[ActualPlant]));global.Sun -= SunCost[ActualPlant];CoolDown[CoolType] = CoolStart;Active = false;global.Selected = false;}
+else if place_meeting(
+floor((mouse_x)/global.XGrid)*global.XGrid+14-MinPlantXDif,floor((mouse_y)/global.YGrid)*global.YGrid+22,asset_get_index("obj" + PlantID[ActualPlant])
+) &amp;&amp; Evolved &gt; 0{
+SoundManagement(PlantedSA,0,global.SoundVolume);audio_sound_pitch(global.SoundA[PlantedSA],1.2);
+instance_create(mouse_x,mouse_y,asset_get_index("obj" + PlantID[ActualPlant] + "Evo" + string(EvoType)));
+global.Sun -= SunCost[ActualPlant] + EvoCost;CoolDown[CoolType] = CoolStart;Active = false;
 global.Selected = false;}
 
 }
 if global.Selected &amp;&amp; (mouse_x &lt; x or mouse_x &gt; x+PackW or mouse_y &lt; y or mouse_y &gt; y+PackH) &amp;&amp; mouse_y &lt;= y+PackH{Active = false;}
 
 //if !place_meeting(mouse_x,mouse_y,self){}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="6" enumb="10">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>global.PlantShowImage = ActualPlant;
 </string>
           </argument>
         </arguments>
@@ -218,7 +347,7 @@ if global.Selected &amp;&amp; (mouse_x &lt; x or mouse_x &gt; x+PackW or mouse_y
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (CanEvo &amp;&amp; CoolDown[CoolType] &lt;= 0)
+            <string>if (CanEvo &amp;&amp; CoolDown[CoolType] &lt;= 0 &amp;&amp; !global.Cutscene)
 {Start = false;
 if (Evo == ""){image_index = 0;Evolved = EvoType;image_speed = 0.4;EvoCost = EvoForm(ActualPlant);sprite_index = GenericFlip;Evo = string("Evo" + string(Evolved));}else
 {sprite_index = GenericFlip;image_index = FlipNumberSpr;image_speed = -0.4;}
@@ -245,10 +374,32 @@ if (Evo == ""){image_index = 0;Evolved = EvoType;image_speed = 0.4;EvoCost = Evo
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if CoolDown[CoolType] &lt;= 0{global.Selected = true;Active = (Active == false) * (global.Sun &gt;= (SunCost[ActualPlant] + EvoCost));}
+            <string>if (CoolDown[CoolType] &lt;= 0 &amp;&amp; !global.Cutscene){
+global.Selected = true;
+Active = (Active == false) * (global.Sun &gt;= (SunCost[ActualPlant] + EvoCost));
+}
 
-if CoolDown[CoolType] &gt; 0 or global.Sun &lt; (SunCost[ActualPlant] + EvoCost){SoundManagement(NoPlantSA,0,global.SoundVolume);}else{if Active{SoundManagement(SeedSA,0,global.SoundVolume);}}
+if !global.Cutscene{
+if (CoolDown[CoolType] &gt; 0 or global.Sun &lt; (SunCost[ActualPlant] + EvoCost)){SoundManagement(NoPlantSA,0,global.SoundVolume);}
+else{if Active{SoundManagement(SeedSA,0,global.SoundVolume);}}
+}
 
+
+if (global.Cutscene &amp;&amp; !IsSelected &amp;&amp; global.FreeSeedSlot &lt; global.SeedSlots &amp;&amp; !IsFloating){
+IsFloating = true;
+IsSelected = true;
+global.FreeSeedSlot++;
+Pos = global.FreeSeedSlot;
+SoundManagement(SelectSND,0,global.SoundVolume);
+}
+
+if(global.Cutscene &amp;&amp; IsSelected &amp;&amp; !IsFloating){
+IsFloating = true;
+IsSelected = false;
+global.FreeSeedSlot--;
+Pos = 0;
+SoundManagement(LeaveSND,0,global.SoundVolume);
+}
 </string>
           </argument>
         </arguments>
@@ -296,27 +447,64 @@ image_index = Evolved-1;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (SunCost[ActualPlant] + EvoCost) &lt;= global.Sun &amp;&amp; CoolDown[CoolType] &lt;= 0 &amp;&amp; !Active{if (Evo != ""){Font = font_add_sprite(sprNumbersEvo,ord("0"),1,1);}else{Font = font_add_sprite(sprNumbers,ord("0"),1,1);}Colour = c_white;}else{if !Active{Colour = c_dkgray;Font = font_add_sprite(sprNumbersRed,ord("0"),1,1);}}
+            <string>if (SunCost[ActualPlant] + EvoCost) &lt;= global.Sun &amp;&amp; CoolDown[CoolType] &lt;= 0 &amp;&amp; !Active{if (Evo != ""){Font = font_add_sprite(sprNumbersEvo,ord("0"),1,1);}
+else{Font = font_add_sprite(sprNumbers,ord("0"),1,1);}Colour = c_white;}else{if !Active &amp;&amp; !global.Cutscene{Colour = c_dkgray;Font = font_add_sprite(sprNumbersRed,ord("0"),1,1);}}
+
+if global.Cutscene{Colour = c_white;}
 
 draw_set_font(Font)
-if (Start or Evolved &gt; 0){
-draw_sprite_ext(sprite_index,image_index,x,y,1,1,0,Colour,(0.001 - (CoolType == 2) * 0.00065 - (CoolType == 3) * 0.00035) * (4.8 - (CoolType + (CoolType != 0) + (CoolType == 3) * 0.2)) * (CoolStart - (CoolDown[CoolType]))+(CoolDown[CoolType] == 0));
+if (Start or Evolved &gt; 0){//
+if Evolved == 0{draw_sprite_ext(sprSeed,SeedBGType[ActualPlant],x,y,1,1,0,Colour,(sprite_index != GenericFlip));}
+else{
+var EvoBG = GetEvoSeedBG(Evolved);
+draw_sprite_ext(sprEvoSeed,EvoBG,x,y,1,1,0,Colour,(sprite_index != GenericFlip));}
+//draw_sprite_ext(sprSeed,SeedBGType[ActualPlant],x,y,1,1,0,Colour,(0.001 - (CoolType == 2) * 0.00065 - (CoolType == 3) * 0.00035) * (4.8 - (CoolType + (CoolType != 0) + (CoolType == 3) * 0.2)) * (CoolStart - (CoolDown[CoolType]))+(CoolDown[CoolType] == 0));
 
-if sprite_index != GenericFlip{draw_text_colour(x+9-((SunCost[ActualPlant] + EvoCost) &gt; 99) * 2,y+26,(SunCost[ActualPlant] + EvoCost),c_white,c_white,c_white,c_white,(0.001 - (CoolType == 2) * 0.00065 - (CoolType == 3) * 0.00035) * (4.8 - (CoolType + (CoolType != 0) + (CoolType == 3) * 0.2)) * (CoolStart - (CoolDown[CoolType]))+(CoolDown[CoolType] == 0));}}
+// shader
+shader_set(sh_outline);
+
+TexelW = texture_get_texel_width(sprite_get_texture("spr" + PlantID[ActualPlant],0));
+TexelH = texture_get_texel_height(sprite_get_texture("spr" + PlantID[ActualPlant],0));
+// uniforms
+//var pixelW = 1.0 / sprite_get_width("spr" + PlantID[ActualPlant]);
+//var pixelH = 1.0 / sprite_get_height("spr" + PlantID[ActualPlant]);
 
 
+if (CoolDown[CoolType] &lt;= 0 &amp;&amp; global.Sun &gt;= SunCost[ActualPlant] + EvoCost &amp;&amp; sprite_index != GenericFlip or global.Cutscene){
+shader_set_uniform_f(uPixelW, TexelW);
+shader_set_uniform_f(uPixelH, TexelH);}
+else{
+shader_reset();}
+SetSeedDrawPosition();
+
+Dea = asset_get_index("spr" + PlantID[ActualPlant] + Evo);
+
+if (Dea == sprPeashooterEvo1){Dea = asset_get_index("spr" + PlantID[ActualPlant] + Evo + "Exception");}
+
+draw_sprite_ext(Dea,0,x+15,y+10+ToiletPosition,1,1,0,Colour,((0.001 - (CoolType == 2) * 0.00065 - (CoolType == 3) * 0.00035) * (4.8 - (CoolType + (CoolType != 0) + (CoolType == 3) * 0.2)) * (CoolStart - (CoolDown[CoolType]))+(CoolDown[CoolType] == 0)) * (sprite_index != GenericFlip));
+shader_reset();
+
+if sprite_index == GenericFlip{draw_self();}
+//if sprite_index != GenericFlip{draw_text_colour(x+9-((SunCost[ActualPlant] + EvoCost) &gt; 99) * 2,y+26,(SunCost[ActualPlant] + EvoCost),c_white,c_white,c_white,c_white,(0.001 - (CoolType == 2) * 0.00065 - (CoolType == 3) * 0.00035) * (4.8 - (CoolType + (CoolType != 0) + (CoolType == 3) * 0.2)) * (CoolStart - (CoolDown[CoolType]))+(CoolDown[CoolType] == 0));}
+}
+
+var SkibidiSun = (((SunCost[ActualPlant] + EvoCost) &gt; 99) * 4 - ((SunCost[ActualPlant] + EvoCost) &lt;= 9) * 5);
 
 //!Evolved &amp;&amp; 
-if Start{draw_text_colour(x+9-((SunCost[ActualPlant] + EvoCost) &gt; 99) * 2,y+26,(SunCost[ActualPlant] + EvoCost),c_white,c_white,c_white,c_white,(0.001 - (CoolType == 2) * 0.00065 - (CoolType == 3) * 0.00035) * (4.8 - (CoolType + (CoolType != 0) + (CoolType == 3) * 0.2)) * (CoolStart - (CoolDown[CoolType]))+(CoolDown[CoolType] == 0));}
+if ((Evolved &gt; 0 or Start) &amp;&amp; sprite_index != GenericFlip){
+var AlphaVar = (0.001 - (CoolType == 2) * 0.00065 - (CoolType == 3) * 0.00035) * (4.8 - (CoolType + (CoolType != 0) + (CoolType == 3) * 0.2)) * (CoolStart - (CoolDown[CoolType]))+(CoolDown[CoolType] == 0);
+draw_text_colour(x+7-SkibidiSun,y+28,(SunCost[ActualPlant] + EvoCost),c_white,c_white,c_white,c_white,AlphaVar);}
 //draw_text(x,y,CoolDown[CoolType])
 if Active{
-if mouse_x &gt; MinPlantX &amp;&amp; mouse_y &gt; 48 &amp;&amp; mouse_y &lt; PlantYLimit &amp;&amp; mouse_x &lt; PlantXLimit &amp;&amp; !place_meeting(floor((mouse_x)/global.XGrid)*global.XGrid+15-MinPlantXDif,floor((mouse_y)/global.YGrid)*global.YGrid+22,objCommonPlantParent){draw_sprite_ext(asset_get_index("spr" + PlantID[ActualPlant]),1,floor((mouse_x)/global.XGrid)*global.XGrid+15-MinPlantXDif,floor((mouse_y)/global.YGrid)*global.YGrid+22,1,1,0,c_white,0.5);}
+if mouse_x &gt; global.MinPlantX &amp;&amp; mouse_y &gt; 48 &amp;&amp; mouse_y &lt; global.PlantYLimit &amp;&amp; mouse_x &lt; global.PlantXLimit &amp;&amp; 
+!place_meeting(floor((mouse_x)/global.XGrid)*global.XGrid+15-MinPlantXDif,floor((mouse_y)/global.YGrid)*global.YGrid+22,objCommonPlantParent){
+draw_sprite_ext(asset_get_index("spr" + PlantID[ActualPlant]),1,floor((mouse_x)/global.XGrid)*global.XGrid+15-MinPlantXDif,floor((mouse_y)/global.YGrid)
+*global.YGrid+22,1,1,0,c_white,0.5);}
 draw_sprite(asset_get_index("spr" + PlantID[ActualPlant] + Evo),1,mouse_x,mouse_y);
 Colour = c_ltgray;
 }
 
-draw_text_colour(view_xview+100,view_yview+200,MinPlantXDif,c_white,c_white,c_white,c_white,1);
-
+//draw_text_colour(view_xview+100,view_yview+200,MinPlantXDif,c_white,c_white,c_white,c_white,1);
 //draw_text(x,y,place_meeting(mouse_x,mouse_y,self))
 </string>
           </argument>
@@ -341,6 +529,29 @@ draw_text_colour(view_xview+100,view_yview+200,MinPlantXDif,c_white,c_white,c_wh
           <argument>
             <kind>1</kind>
             <string>if CoolDown[CoolType] &lt;= 0 &amp;&amp; ActualPlant &lt;= 1{EvoType = EvoType mod 2;EvoType++;}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="9" enumb="68">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Debug = !Debug;
 </string>
           </argument>
         </arguments>

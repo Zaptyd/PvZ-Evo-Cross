@@ -25,10 +25,22 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>SetOwnDayAlpha();
+            <string>FumeTiming = 0;
+IsFire = false;
+CanHit = false;
+IsGround = false;
+CustomAttackRight = view_xview+view_wview-global.XGrid;
+CustomAttackLeft = 0;
+Detect = false;
+CanPierce = false;
+BaseSprProj = sprPea;
+IsFire = false;
+CanPierce = false;
+SetOwnDayAlpha();
 SpecialValueAn = 0;
 Sleep = false;
 SleepTimeGS = 2;
+SleepTimeInit = SleepTimeGS;
 IsCrushed = false;
 EatCD = 0;
 MinPlant(5);
@@ -45,10 +57,11 @@ alarm[2] = 2;
 MaxShape = 2;
 MoveShape = 0.5;
 image_speed = BaseIS;
-
+AttackV = 1;
 HValue = 1;
-SetPlant(global.HealthType[HValue],0,1,global.HealthType[HValue],50,1,5,1);
-alarm[0] = 60;
+if !AttackV{SetPlant(global.HealthType[HValue],0,1,global.HealthType[HValue],50,1,5,1);}
+else{SetPlant(global.HealthType[HValue],0,1,global.HealthType[HValue],50,AttackV,5,1);}
+alarm[0] = 30;
 alarm[1] = 1;
 MinPlantXDizfScript(x);
 x = floor(x / global.XGrid) * global.XGrid+choose(15,16)-MinPlantXDif;
@@ -57,6 +70,7 @@ depth = depth - (y / global.YGrid);
 ScriptLaneDetect();
 BaseSpr = sprite_get_name(sprite_index);
 SleepSpr = string(BaseSpr + "Sleep");
+AttackSpr = BaseSpr + "Attack";
 CMin = 0.6;
 CMax = 0.65;
 MinFrameAttack = sprite_get_number(asset_get_index(BaseSpr + "Attack"))-2;
@@ -84,7 +98,7 @@ MaxFrameAttack = sprite_get_number(asset_get_index(BaseSpr + "Attack"))-1;
           <argument>
             <kind>1</kind>
             <string>alarm[0] = 40;
-with instance_create(x,y+10,objDetector){Lane = other.Lane};
+if collision_rectangle(bbox_left+CustomAttackLeft,bbox_top,CustomAttackRight,bbox_bottom,objZombieParent,1,0){Detect = true;}else{Detect = false;}
 </string>
           </argument>
         </arguments>
@@ -168,8 +182,8 @@ else{image_speed = 0;}
             <kind>1</kind>
             <string>//Lane = (y &gt; 92) + (y &gt; 124) + (y &gt; 176) + (y &gt; 220) + (y &gt; 240);
 randomize();
-if Lane &lt;= 7{Detect = (global.LaneDetect[Lane] == true);}
-if image_index &gt; MinFrameAttack &amp;&amp; sprite_index == (asset_get_index(BaseSpr)){CoolDown-= random_range(CMin,CMax) * Detect;if CoolDown &lt;= 0{sprite_index = (asset_get_index(BaseSpr + "Attack"));image_index = 0;}}
+//if Lane &lt;= 7{Detect = (global.LaneDetect[Lane] == true);}
+if image_index &gt; MinFrameAttack &amp;&amp; sprite_index == (asset_get_index(BaseSpr)){CoolDown-= random_range(CMin,CMax) * Detect;if CoolDown &lt;= 0{sprite_index = (asset_get_index(AttackSpr));image_index = 0;}}
 
 CoolDown -= (Attack &gt; 0) * Detect;
 

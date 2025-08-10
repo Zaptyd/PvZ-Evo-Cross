@@ -1,3 +1,14 @@
+global.DownMove = 0;
+global.InitXview = 42;
+//global.SeedBankX[i] = X+5+(sprite_get_width(global.SeedSlotSprite) * i) + 4;
+global.SeedsObtained = 10;
+global.SeedsSpawned = 0;
+global.SunBankRequired = true;
+global.SeedsChoosed = false;
+global.Cutscene = false;
+global.MinRoomX = 42;
+global.ShadeAlpha = 0;
+global.DayAlphaTimer = 0;
 global.BGChangeAlpha = 0;
 global.LevelTimeTypeBG[0] = BG_Day;
 global.LevelTimeTypeBG[1] = BG_Afternoon;
@@ -17,10 +28,13 @@ global.DayTime = 0;
 global.XGrid = 37;
 global.YGrid = 47;
 global.CloseRange = 40
+global.FreeSeedSlot = 0;
 global.ChompRange = 65;
 global.MidRange = 96;
+global.LongRange = 160;
 HealthArray();
 global.AvAttack1CD = 60;
+global.AvAttackSpikeCD = 80;
 global.AvAttackMCD = 9;
 global.PeaDamage = 1;
 global.FirePeaDamage = 1.5;
@@ -33,4 +47,7 @@ global.ShieldHealth = 46;
 global.MinSun = global.XGrid * 6;
 global.SunMeta = 25;
 global.SmallSun = 15;
-
+global.SeedsChoosed = 0;
+global.SeedSlots = 6;
+global.SeedSlotSprite = sprSunBank2;
+global.SeedBankSprite = sprSunBank1;

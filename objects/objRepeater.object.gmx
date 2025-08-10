@@ -48,10 +48,8 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>
-
-//Generic Attacker Code
-AttackScript(global.AvAttack1CD/(1 + (Attack &gt; 0) * 0.5),global.AvAttackMCD);
+            <string>//Generic Attacker Code
+AttackScript(global.AvAttack1CD,global.AvAttackMCD+1);
 </string>
           </argument>
         </arguments>

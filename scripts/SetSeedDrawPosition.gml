@@ -1,0 +1,1 @@
+ToiletPosition = (-(PlantID[ActualPlant] == "Spikeweed") * 7) - ((PlantID[ActualPlant] == "CherryBomb")) - ((PlantID[ActualPlant] == "Chomper") * 3) + ((PlantID[ActualPlant] == "PuffShroom") * 8 * (Evo == ""));

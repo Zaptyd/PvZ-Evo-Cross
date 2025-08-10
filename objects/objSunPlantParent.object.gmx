@@ -25,7 +25,12 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>SetOwnDayAlpha();
+            <string>IsFire = false;
+IsGround = false;
+SunAnimCD = 20;
+SetOwnDayAlpha();
+SunTMin = 800;
+SunTMax = 820;
 MinPlant(5);
 Sleep = false;
 HValue = 1;
@@ -66,7 +71,12 @@ SleepSpr = string(BaseSpr + "Sleep");
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>//Lane = (y &gt; 92) + (y &gt; 124) + (y &gt; 176) + (y &gt; 220) + (y &gt; 240);
+            <string>SunCoolDown -= (SunCoolDown &gt; 0) * !Sleep;
+if (SunCoolDown &lt;= 0 &amp;&amp; image_index &lt; MaxF &amp;&amp; sprite_index == asset_get_index(BaseSpr)) &amp;&amp; !Sleep{
+sprite_index = asset_get_index(sprGenSun);
+alarm[0] = SunAnimCD;
+image_index = 0;
+}
 
 if HP &lt;= 0{instance_destroy();}
 </string>

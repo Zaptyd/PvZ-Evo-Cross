@@ -29,7 +29,7 @@
 Attack = 1;
 MaxEatCD = 0;
 EatCD = MaxEatCD;
-MinFrameAttack = 5;
+MinFrameAttack = 4;
 MaxFrameAttack = 6;
 EatEnd = 120;
 ChompSA = 21;

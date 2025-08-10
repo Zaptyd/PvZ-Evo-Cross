@@ -25,7 +25,14 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>SetOwnDayAlpha();
+            <string>CanBeFumeTimer = 0;
+CanBeFume = true;
+IsIce = false;
+SNDHitActivate = false;
+HitAlpha = 0.5;
+Hit = false;
+GetGroundPlants();
+SetOwnDayAlpha();
 BaseISinit = 0.15;
 BaseIS = BaseISinit;
 CoolRythmS = 1;
@@ -39,7 +46,7 @@ FreezeType = 1;
 FreezePercent = 0;
 HandFrame = 16;
 MinChompDistance = 14;
-SetZombie(global.BasicHealth,0,2,"sprZombieHand","sprZombieHandEating",3,-10,global.BasicHealth,12,-1,"sprZombie","sprZombieEating",random_range(-0.22,-0.23));
+SetZombie(global.BasicHealth,0,2,"sprZombieHandMove","sprZombieHandEating",3,-10,global.BasicHealth,12,-1,"sprZombie","sprZombieEating",random_range(-0.22,-0.23));
 depth = -(y / global.YGrid) - 1;
 IceSlow = 1;
 Damage = 1;
@@ -156,7 +163,17 @@ visible = true;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if hspeed != 0{image_xscale = -sign(hspeed);sprite_index = asset_get_index(ZombieIdleSprite);}
+            <string>CanBeFumeTimer+= (place_meeting(x,y,objPea));
+
+if !place_meeting(x,y,objPea) or CanBeFumeTimer &gt; 8{CanBeFume = true;CanBeFumeTimer = 0;}
+
+IsNormal = (image_blend == c_white);
+
+Plantptr = collision_rectangle(bbox_left-1,bbox_top,bbox_right-1,bbox_bottom,objCommonPlantParent,1,0);
+
+if Hit{ZombieHitSNDManagement();image_alpha = HitAlpha;Hit = false;SNDHitActivate = false;}
+
+if hspeed != 0{image_xscale = -sign(hspeed);sprite_index = asset_get_index(ZombieIdleSprite);}
 if CanWalk &amp;&amp; hspeed == 0{sprite_index = asset_get_index(ZombieEatSprite);}
 
 if image_alpha &lt; 1{image_alpha += 0.05;}
@@ -165,23 +182,24 @@ FireTimer-=IsFire;
 
 if FreezePercent &gt;= 100{image_index = 0;BaseIS = 0;CanWalk = 0;FreezedTime = global.MaxFreezedTime[FreezeType];FreezePercent = 0;}
 
-if !CanWalk{if !place_meeting(x,y,objCommonPlantParent){sprite_index = asset_get_index(ZombieIdleSprite);};FreezedTime--;BaseIS = 0;if FreezedTime &lt;= 0{BaseIS = BaseISinit;CanWalk = 1;FreezedTime = global.MaxFreezedTime[FreezeType];IceCoolDown = global.ZIceCD;}}
+if !CanWalk{if !Plantptr or Plantptr.IsGround{sprite_index = asset_get_index(ZombieIdleSprite);};FreezedTime--;BaseIS = 0;if FreezedTime &lt;= 0{BaseIS = BaseISinit;CanWalk = 1;FreezedTime = global.MaxFreezedTime[FreezeType];IceCoolDown = global.ZIceCD;}}
 
 if FireTimer &lt; 0{IsFire = false;FireTimer = FireCoolDown;}
 
-if image_blend != c_white{IceSlow = CanWalk/2;CoolRythm = IceSlow;IceCoolDown-=1 - (FreezePercent)/100;FreezePercent-= FreezedRD * (FreezePercent &gt; 20) * (FreezePercent &gt; 0);BaseIS = BaseISinit/2;DayColour = DCTF;if IceCoolDown &lt;= 0 or IsFire{BaseIS = BaseISinit;image_blend = c_white;DayColour = DCT;FreezePercent = 0;CoolRythm = CoolRythmS;}}else{IceSlow = 1;
+if !IsNormal{IceSlow = CanWalk/2;CoolRythm = IceSlow;IceCoolDown-=1 - (FreezePercent)/100;FreezePercent-= FreezedRD * (FreezePercent &gt; 20) * (FreezePercent &gt; 0);BaseIS = BaseISinit/2;DayColour = DCTF;if IceCoolDown &lt;= 0 or IsFire{BaseIS = BaseISinit;image_blend = c_white;DayColour = DCT;FreezePercent = 0;CoolRythm = CoolRythmS;}}else{IceSlow = 1;
 BaseIS = BaseISinit;}
 
 image_speed = BaseIS * CanWalk;
 
 CoolDown-= (CoolDown &gt; 0) * CoolRythm;
 
-if place_meeting(x,y,objCommonPlantParent){hspeed = 0;}else{if image_index &lt;= 7{hspeed = (Speed) * IceSlow;}}
+if !Plantptr or Plantptr.IsGround{if image_index &lt;= 7{hspeed = (Speed) * IceSlow;}}
+
 
 hspeed -= (image_index &gt; 7) * Speed * 0.1 * (hspeed &lt; -0.1 or hspeed &gt; 0.1) * CanWalk;
 
 HandFrame = HandPositionY + (image_index &gt;= 5 &amp;&amp; image_index &lt; 8) + (image_index &gt;= 6 &amp;&amp; image_index &lt; 7);
-objFrame = HandPositionY + (image_index &gt;= 5 &amp;&amp; image_index &lt; 8) + (image_index &gt;= 6 &amp;&amp; image_index &lt; 9);
+objFrame = HandPositionY + (image_index &gt;= 6 &amp;&amp; image_index &lt; 8) + (image_index &gt;= 3 &amp;&amp; image_index &lt; 5);// + (image_index &gt;= 6 &amp;&amp; image_index &lt; 8);
 objEatingX = ObjPositionX + (image_index &gt;= 2 &amp;&amp; image_index &lt; 3) + (image_index &gt;= 5 &amp;&amp; image_index &lt; 6);
 objEatingY = HandPositionY + (image_index &gt;= 1 &amp;&amp; image_index &lt; 3) + (image_index &gt;= 2 &amp;&amp; image_index &lt; 3) + (image_index &gt;= 4 &amp;&amp; image_index &lt; 6) * 2;
 
@@ -221,10 +239,18 @@ instance_destroy();
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if CoolDown &lt;= 0{other.HP-= Damage;CoolDown = CoolDownBase;EatingSA = choose(17,18);SoundManagement(EatingSA,0,global.SoundVolume);
+            <string>if !other.IsGround
+{
+hspeed = 0;
+if CoolDown &lt;= 0{other.HP-= Damage;CoolDown = CoolDownBase;EatingSA = choose(17,18);SoundManagement(EatingSA,0,global.SoundVolume);
 randomize();}
 if other.HP &lt;= 0{SoundManagement(GulpSA,0,global.SoundVolume);} 
 if place_meeting(x,y,objChomper) &amp;&amp; other.image_index &gt; other.MinFrameAttack-1 &amp;&amp; !IsGarg &amp;&amp; other.sprite_index != asset_get_index(other.BaseSpr) &amp;&amp; collision_rectangle(bbox_left,bbox_top,bbox_right+global.CloseRange-MinChompDistance,bbox_bottom,objZombieParent,1,1){HP = 0;SoundManagement(global.BonkSA,0,global.SoundVolume);}
+}
+else
+{
+if !other.DoDamage{HP -= other.Damage;other.CanHit = false;other.CoolDown = other.MaxCD;Hit = true;}
+}
 </string>
           </argument>
         </arguments>
@@ -247,7 +273,7 @@ if place_meeting(x,y,objChomper) &amp;&amp; other.image_index &gt; other.MinFram
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if !IsGarg &amp;&amp; HP &gt; 0{Chomped = true;other.destroy = 2;}else{HP -= other.Damage;image_alpha = 0.6;other.destroy = 1;}
+            <string>if !IsGarg &amp;&amp; HP &gt; 0{Chomped = true;other.destroy = 2;}else{HP -= other.Damage;Hit = true;other.destroy = 1;}
 </string>
           </argument>
         </arguments>
@@ -270,7 +296,7 @@ if place_meeting(x,y,objChomper) &amp;&amp; other.image_index &gt; other.MinFram
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>HP-= 90;
+            <string>HP-= other.Damage;
 </string>
           </argument>
         </arguments>
@@ -293,7 +319,8 @@ if place_meeting(x,y,objChomper) &amp;&amp; other.image_index &gt; other.MinFram
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if other.sprite_index == asset_get_index("spr" + other.DestroySprite) &amp;&amp; other.sprite_index != sprPea &amp;&amp; (other.sprite_index == sprFirePeaV) &amp;&amp; other.image_index == 0{HP-= other.Damage/2;image_alpha = 0.6;global.IsFire = true;global.FreezePercent=0;}
+            <string>if other.sprite_index == asset_get_index("spr" + other.DestroySprite) &amp;&amp; other.sprite_index != sprPea &amp;&amp; (other.sprite_index == sprFirePeaV) &amp;&amp; other.image_index == 0{HP-= other.Damage/2;Hit = true;global.IsFire = true;global.FreezePercent=0;}
+if other.CanFume &amp;&amp; (CanBeFume){CanBeFume = false;CanBeHit = false;HP-= other.Damage;Hit = true;}
 
 </string>
           </argument>
@@ -367,20 +394,18 @@ if place_meeting(x,y,objChomper) &amp;&amp; other.image_index &gt; other.MinFram
 
 draw_self();
 draw_sprite_ext(sprite_index,image_index,x,y,image_xscale,image_yscale,image_angle,DayColour,LocAlpha);
-if HP &gt; global.BasicHealth/2{
-
-
-if hspeed == 0 &amp;&amp; (CanWalk or place_meeting(x,y,objCommonPlantParent)){
-draw_sprite_ext(asset_get_index(ZombieEatHand),image_index,x+HandEatPositionX*image_xscale,y+HandEatPositionY,image_xscale,image_yscale,0,image_blend,image_alpha);
-draw_sprite_ext(asset_get_index(ZombieEatHand),image_index,x+HandEatPositionX*image_xscale,y+HandEatPositionY,image_xscale,image_yscale,0,DayColour,LocAlpha);
+if (HP &gt; global.BasicHealth/2){
+if (hspeed == 0 &amp;&amp; (CanWalk or place_meeting(x,y,objCommonPlantParent))){
+draw_sprite_ext(asset_get_index(ZombieEatHand),image_index,x,y,image_xscale,image_yscale,0,image_blend,image_alpha);
+draw_sprite_ext(asset_get_index(ZombieEatHand),image_index,x,y,image_xscale,image_yscale,0,DayColour,LocAlpha);
 }
-else{draw_sprite_ext(asset_get_index(ZombieHand),1,x+HandPositionX*image_xscale,y+HandFrame,image_xscale,image_yscale,0,image_blend,image_alpha);
-draw_sprite_ext(asset_get_index(ZombieHand),1,x+HandPositionX*image_xscale,y+HandFrame,image_xscale,image_yscale,0,DayColour,LocAlpha);
+else{draw_sprite_ext(asset_get_index(ZombieHand),image_index,x,y,image_xscale,image_yscale,0,image_blend,image_alpha);
+draw_sprite_ext(asset_get_index(ZombieHand),image_index,x,y,image_xscale,image_yscale,0,DayColour,LocAlpha);
 }
 }
-if HP &gt; global.BasicHealth{
-draw_sprite_ext(asset_get_index("spr" + ZombieType),(HP &lt; MaxHP / 1.5) + (HP &lt; MaxHP / 2),x+(ObjPositionX*image_xscale * (hspeed != 0) + objEatingX * (hspeed == 0)),y-31+(objFrame * (hspeed != 0) + objEatingY * (hspeed == 0)),image_xscale,image_yscale,0,image_blend,image_alpha);
-draw_sprite_ext(asset_get_index("spr" + ZombieType),(HP &lt; MaxHP / 1.5) + (HP &lt; MaxHP / 2),x+(ObjPositionX*image_xscale * (hspeed != 0) + objEatingX * (hspeed == 0)),y-31+(objFrame * (hspeed != 0) + objEatingY * (hspeed == 0)),image_xscale,image_yscale,0,DayColour,LocAlpha);
+if (HP &gt; global.BasicHealth){
+draw_sprite_ext(asset_get_index("spr" + ZombieType),(HP &lt; MaxHP / 1.5) + (HP &lt; MaxHP / 2),x+((ObjPositionX+ObjMovementDiff())*image_xscale * (hspeed != 0) + objEatingX * (hspeed == 0)),y-31+(objFrame * (hspeed != 0) + objEatingY * (hspeed == 0)),image_xscale,image_yscale,0,image_blend,image_alpha);
+draw_sprite_ext(asset_get_index("spr" + ZombieType),(HP &lt; MaxHP / 1.5) + (HP &lt; MaxHP / 2),x+((ObjPositionX+ObjMovementDiff()) *image_xscale * (hspeed != 0) + objEatingX * (hspeed == 0)),y-31+(objFrame * (hspeed != 0) + objEatingY * (hspeed == 0)),image_xscale,image_yscale,0,DayColour,LocAlpha);
 }
 else
 {

@@ -6,5 +6,5 @@ if Pause{audio_pause_all();audio_play_sound(SND_Pause,1,0);screen_save("Pause.pn
 sprite_delete(CurrentScreen);
 instance_activate_all();
 audio_resume_all();
-VolumeNew();
+if !global.RoomTest{VolumeNew();}
 CurrentScreen = -1}

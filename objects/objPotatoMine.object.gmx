@@ -54,17 +54,19 @@ HitBox = false;
           <argument>
             <kind>1</kind>
             <string>if !Sleep{sprite_index = asset_get_index(BaseSpr+ string(ActualPhase));}else{
+HValue = 1;
+if (MaxHP &gt; global.HealthType[HValue] &amp;&amp; ActualPhase != 3){HP = global.HealthType[HValue];
+MaxHP = global.HealthType[HValue];}
 ActualPhase = 3;
 CoolDown = 10;
-HValue = 1;
-if MaxHP &gt; global.HealthType[HValue]{HP = global.HealthType[HValue];
-MaxHP = global.HealthType[HValue];}}
+}
 
 image_speed = BaseIS *(Sleep/2 + 1);
 
 switch ActualPhase
 {
 case 3:
+HP = 6;
 HitBox = false;
 BaseIS = 0.1;
 mask_index = sprPlantParentSmol;

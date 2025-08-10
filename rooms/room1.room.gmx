@@ -60,7 +60,7 @@
     <instance objName="objSpawnSun" x="32" y="-48" name="inst_85233687" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="objLawnMower" x="180" y="235" name="inst_E5D8E9B4" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="objLawnMower" x="180" y="282" name="inst_E69AE069" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="objSongDefiner" x="0" y="0" name="inst_7E6F9CAF" locked="0" code="SongManar(global.Song,global.MusicVolume);&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="objSongDefiner" x="0" y="0" name="inst_7E6F9CAF" locked="0" code="//SongManar(global.Song,global.MusicVolume);&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="objFlowersDrawer" x="36" y="329" name="inst_B8A7804C" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="objCherryBomb" x="288" y="141" name="inst_124F822B" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="objPotatoMine" x="324" y="235" name="inst_A29FA296" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>

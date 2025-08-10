@@ -1,4 +1,4 @@
-DayTimeLimit[0] = 15;
-DayTimeLimit[1] = 8;
-DayTimeLimit[2] = 12;
+DayTimeLimit[0] = 240;
+DayTimeLimit[1] = 80;
+DayTimeLimit[2] = 150;
 DayTimeLimit[3] = 1;

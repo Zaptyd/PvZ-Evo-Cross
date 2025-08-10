@@ -18,7 +18,7 @@
   </TextureGroups>
   <For3D>0</For3D>
   <width>30</width>
-  <height>36</height>
+  <height>39</height>
   <frames>
     <frame index="0">images\sprSeeds_0.png</frame>
     <frame index="1">images\sprSeeds_1.png</frame>
@@ -37,5 +37,9 @@
     <frame index="14">images\sprSeeds_14.png</frame>
     <frame index="15">images\sprSeeds_15.png</frame>
     <frame index="16">images\sprSeeds_16.png</frame>
+    <frame index="17">images\sprSeeds_17.png</frame>
+    <frame index="18">images\sprSeeds_18.png</frame>
+    <frame index="19">images\sprSeeds_19.png</frame>
+    <frame index="20">images\sprSeeds_20.png</frame>
   </frames>
 </sprite>

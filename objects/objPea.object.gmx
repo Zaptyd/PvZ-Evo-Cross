@@ -3,7 +3,7 @@
   <spriteName>sprPea</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>-5</depth>
+  <depth>-9</depth>
   <persistent>0</persistent>
   <parentName>objProjectileParent</parentName>
   <maskName>sprProjectileMask</maskName>
@@ -25,9 +25,16 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>image_speed = 0;
+            <string>CanFumeTimer = 0;
+CanHit = true;
+xstart = x;
+SprFume = sprSporeFume;
+IsIce = false;
+CanPierce = false;
+image_speed = 0;
 Damage = 1;
-hspeed = 4.5;
+BaseHSP = 4.5;
+hspeed = BaseHSP - (CanPierce * 1.5);
 angle = 25;
 BaseSprite = sprPea;
 Lane = 0;
@@ -35,12 +42,15 @@ FreezeChance = 11;
 DestroySprite = "Pea";
 Active = false;
 IsFire = false;
+Alpha = 1;
 HitSND = choose(11,12,13);
 ConeSND = choose(22,23);
 ShieldSND = choose(24,25);
 SNDActived = false;
 FType = 1;
+xstart = x;
 SetOwnDayAlpha();
+CanFume = (sprite_index == SprFume);
 </string>
           </argument>
         </arguments>
@@ -63,7 +73,21 @@ SetOwnDayAlpha();
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>image_angle-=angle;
+            <string>CanFumeTimer+= (sprite_index == SprFume);
+/*
+if CanFumeTimer &gt; 3{BaseHSP = 20;CanHit = true;CanFumeTimer = 0;}
+*/
+image_angle-=angle;
+if (sprite_index == SprFume){BaseHSP = 20;CanHit = true;CanFume = true;image_alpha = 0;}
+
+//image_alpha = 0.01 * ((xstart+global.LongRange)-x)
+
+if (x &gt; xstart+global.LongRange &amp;&amp; sprite_index == SprFume){instance_destroy();}
+
+if (!place_meeting(x,y,objZombieParent) &amp;&amp; hspeed &lt; BaseHSP-CanPierce &amp;&amp; CanPierce){
+SNDActived = false;
+hspeed = ((BaseHSP + (CanFume)) * 3) - (CanPierce * 0.5);
+}
 </string>
           </argument>
         </arguments>
@@ -86,19 +110,36 @@ SetOwnDayAlpha();
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>
-if IsFire &amp;&amp; !Active{if other.IceCoolDown != 0{other.IsFire = true;}with instance_create(x+3,y,objGenericParticle){sprite_index = asset_get_index("spr" + other.DestroySprite);depth = -99;image_alpha = 0.4;image_speed = 0.15;}SoundManagement(global.FPeaSA,0,global.SoundVolume);audio_sound_pitch(global.SoundA[global.FPeaSA],0.8);mask_index = sprFPeaMask;Active = true;}
-if (sprite_index == sprPea or sprite_index == sprSpore) &amp;&amp; !Active{SoundManagement(HitSND,0,global.SoundVolume);Active = true;}
-if sprite_index == sprSnowPea &amp;&amp; !Active &amp;&amp; other.FreezePercent &lt; 100{other.FreezePercent += FreezeChance;other.IsFire = false;other.image_blend = c_aqua;other.IceCoolDown = global.ZIceCD;SoundManagement(HitSND,0,global.SoundVolume);audio_sound_pitch(global.SoundA[HitSND],0.8);repeat 4 instance_create(x,y,objIceParticle);Active = true;}
+            <string>if sprite_index != SprFume{
+if IsFire &amp;&amp; !Active{if other.IceCoolDown != 0{other.IsFire = true;}with instance_create(x+3,y,objGenericParticle){sprite_index = asset_get_index("spr" + other.DestroySprite);depth = -99;image_alpha = 0.4;image_speed = 0.15;}if !SNDActived{SoundManagement(global.FPeaSA,0,global.SoundVolume);audio_sound_pitch(global.SoundA[global.FPeaSA],0.8);SNDActived = true;}mask_index = sprFPeaMask;Active = !CanPierce;}
+if (sprite_index == sprPea or sprite_index == sprSpore) &amp;&amp; !Active{Active = !CanPierce;}
+if sprite_index == sprSnowPea &amp;&amp; !Active &amp;&amp; other.FreezePercent &lt; 100{other.FreezePercent += FreezeChance;other.IsFire = false;other.image_blend = c_aqua;IsIce = true;other.IceCoolDown = global.ZIceCD;repeat 4 instance_create(x,y,objIceParticle);Active = !CanPierce;}
 
-if !IsFire &amp;&amp; other.HP &gt; global.BasicHealth &amp;&amp; !SNDActived{
-if other.MaxHP &lt; global.BasicHealth+global.ShieldHealth
-{SoundManagement(ConeSND,0,global.SoundVolume);SNDActived = true;}
-else
-{SoundManagement(ShieldSND,0,global.SoundVolume);SNDActived = true;}
-};
-
-if image_speed == 0 or sprite_index != asset_get_index("spr" + DestroySprite) &amp;&amp; sprite_index != sprPea{image_index = 0;sprite_index = asset_get_index("spr" + DestroySprite);image_speed = 0.4;other.image_alpha = 0.6;other.HP-=Damage;hspeed = 0.5;angle = 0;image_angle = 0;}
+if image_speed == 0 or sprite_index != asset_get_index("spr" + DestroySprite) &amp;&amp; sprite_index != sprPea{other.Hit = true;if !CanPierce{image_index = 0;sprite_index = asset_get_index("spr" + DestroySprite);image_speed = 0.4;hspeed = 0.5;angle = 0;image_angle = 0;}PiercingCoef = (1 - CanPierce * 0.9);other.HP-=Damage * PiercingCoef;if (CanPierce){hspeed = BaseHSP-2;}}
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="4" ename="objPea">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>while place_meeting(x,y,objPea) &amp;&amp; !self{x--;}
 </string>
           </argument>
         </arguments>
@@ -145,7 +186,8 @@ instance_destroy();
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if sprite_index == asset_get_index("spr" + DestroySprite){instance_destroy()};
+            <string>if sprite_index == asset_get_index("spr" + DestroySprite) &amp;&amp; !CanPierce{instance_destroy()};
+
 </string>
           </argument>
         </arguments>
@@ -170,6 +212,20 @@ instance_destroy();
             <kind>1</kind>
             <string>draw_self();
 draw_sprite_ext(sprite_index,image_index,x,y,image_xscale,image_yscale,image_angle,DayColour,global.ShadeAlpha);
+
+if sprite_index == SprFume
+{
+depth = -10;
+for(i = 0;i &lt; CanFumeTimer;i++){
+if (i &gt; CanFumeTimer * 0.5){Alpha -= 0.1;}else{Alpha = 1;}
+draw_sprite_ext(sprite_index,image_index,xstart+12+i*choose(4,3,2),y-2-choose(4,-1,2),0.7,0.7,image_angle,c_white,Alpha-0.2);
+draw_sprite_ext(sprSpore,image_index,xstart+12+i*choose(3,2,5),y-2+choose(1,-3,2),0.6,0.6,image_angle,c_white,Alpha-0.2);}
+/*draw_sprite_ext(sprite_index,image_index,x+6,y+3,0.6,0.6,image_angle,c_white,(CanFumeTimer &gt; 2) * 0.8);
+draw_sprite_ext(sprSpore,image_index,x-9,y+3,0.8,0.8,image_angle,c_white,(CanFumeTimer &gt; 5) *0.7);
+draw_sprite_ext(sprite_index,image_index,x+4,y+3,1.2,1.2,image_angle,c_white,(CanFumeTimer &gt; 10) *0.8);
+draw_sprite_ext(sprSpore,image_index,x+9,y-4,1.8,1.8,image_angle,c_white,(CanFumeTimer &gt; 20) *0.7);
+*/
+}
 </string>
           </argument>
         </arguments>

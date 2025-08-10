@@ -29,6 +29,7 @@
 Damage = 90;
 image_speed = 0.3;
 angle = 0;
+img_angle = 0;
 image_max = 1;
 alarm[0] = 1;
 EXSND = 30;
@@ -80,7 +81,7 @@ RotationE = 0.1;
             <kind>1</kind>
             <string>if image_index &gt; image_max{if angle != 0{image_alpha -= 0.015;angle+=RotationE;};Damage = 0;}
 
-image_angle += angle;
+img_angle += angle;
 </string>
           </argument>
         </arguments>
@@ -119,8 +120,9 @@ image_angle += angle;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_self();
-draw_sprite_ext(sprite_index,image_index,x,y,image_xscale,image_yscale,image_angle,DayColour,global.ShadeAlpha);
+            <string>draw_sprite(mask_index,0,x,y);
+draw_self_ext(image_index,0,0,image_xscale,image_yscale,img_angle,image_blend,image_alpha);
+draw_sprite_ext(sprite_index,image_index,x,y,image_xscale,image_yscale,img_angle,DayColour,global.ShadeAlpha);
 </string>
           </argument>
         </arguments>

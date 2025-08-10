@@ -25,7 +25,10 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>SetOwnDayAlpha();
+            <string>IsFire = false;
+IsGround = false;
+SNDActived = false;
+SetOwnDayAlpha();
 HitBox = false;
 MinPlant(5);
 MinPlantXDizfScript(x);
@@ -159,7 +162,7 @@ if HP &lt;= 0{instance_destroy();}
           <argument>
             <kind>1</kind>
             <string>draw_self_ext(image_index,MoveShape,0,image_xscale,image_yscale,0,c_white,1); 
-draw_self_ext(image_index,MoveShape,0,image_xscale,image_yscale,0,DayColour,global.ShadeAlpha); 
+if !IsFire{draw_self_ext(image_index,MoveShape,0,image_xscale,image_yscale,0,DayColour,global.ShadeAlpha);}
 </string>
           </argument>
         </arguments>

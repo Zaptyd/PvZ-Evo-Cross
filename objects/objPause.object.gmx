@@ -25,14 +25,9 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>global.ShadeAlpha = 0;
-global.DayAlphaTimer = 0;
+            <string>global.RoomTest = true;
 BK = false;
-GlobalSettings(75,1);
-EvoCoztDefiner();
-SoundsArray();
-MusicArray();
-RecurrentSoundsVar();
+global.PauseButton = false;
 Pause = false;
 CurrentScreen = -1;
 image_speed = 0;
@@ -48,6 +43,7 @@ X = x+139;
 Y = y+82;
 W = 16;
 H = 15;
+Debug = false;
 </string>
           </argument>
         </arguments>
@@ -127,6 +123,7 @@ alarm[1] = 5
 //if y &lt; 0{y = 0;}
 //if y &gt; view_hview+view_yview-sprite_height{y = view_hview+view_yview-sprite_height;}
 //if x &gt; view_wview+view_xview-sprite_width{x = view_wview+view_xview-sprite_width;}
+if global.PauseButton &amp;&amp; !visible{PauzeScript();global.PauseButton = false;}
 
 if visible &amp;&amp; sign(mouse_check_button_pressed(mb_left)) &amp;&amp; mouse_x &gt;= X &amp;&amp; mouse_x &lt;= X+W &amp;&amp; mouse_y &gt;= Y &amp;&amp; mouse_y &lt;= Y+H &amp;&amp; !BK
 {window_set_fullscreen(!window_get_fullscreen());BK = true;objVar.depth = 0;alarm[0] = 4;}
@@ -171,9 +168,6 @@ if visible &amp;&amp; sign(mouse_check_button_pressed(mb_left)) &amp;&amp; mouse
             <string>ScreenResX = display_get_width();
 ScreenResY = display_get_height();
 
-
-
-
 if (Pause)
 {
 if CurrentScreen == -1
@@ -208,7 +202,7 @@ if BK{draw_sprite_ext(sprBlackPixel,0,view_xview,view_yview,view_wview,view_hvie
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>global.Sun+= 50;
+            <string>global.Sun+= 50 * Debug;
 </string>
           </argument>
         </arguments>
@@ -242,6 +236,29 @@ if BK{draw_sprite_ext(sprBlackPixel,0,view_xview,view_yview,view_wview,view_hvie
         <whoName>self</whoName>
         <relative>0</relative>
         <isnot>0</isnot>
+      </action>
+    </event>
+    <event eventtype="9" enumb="68">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Debug = !Debug;
+</string>
+          </argument>
+        </arguments>
       </action>
     </event>
     <event eventtype="9" enumb="27">

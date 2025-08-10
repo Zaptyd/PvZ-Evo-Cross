@@ -26,6 +26,7 @@
           <argument>
             <kind>1</kind>
             <string>SetPlant(global.HealthType[2],0,1,global.HealthType[2],50,1,5,1);
+//CanPierce = true;
 </string>
           </argument>
         </arguments>
@@ -63,7 +64,7 @@ if BaseIS == 0
 
 
 if BaseIS != 0{image_speed = BaseIS *(Sleep/2 + !Sleep) + (sprite_index == (asset_get_index(BaseSpr + "Attack"))) * (0.1+SpecialValueAn + (Attack &gt; 1) * 0.2+SpecialValueAn);}
-else{image_speed = 0;}
+else{image_speed = 0;Attack = BaseAttack;}
 </string>
           </argument>
         </arguments>
@@ -93,7 +94,7 @@ DetectNear = collision_rectangle(bbox_left-(global.CloseRange/2),bbox_top-(globa
 
 if (sprite_index != (asset_get_index(BaseSpr + "Scared"))){BaseIS = 0.18 + (sprite_index == (asset_get_index(BaseSpr + "Attack"))) * 0.1;}
 
-if !Sleep{AttackScriptExt(global.SporeSA,sprSpore,"SporeV",global.AvAttack1CD,global.AvAttackMCD,1,false,-2);}
+if !Sleep &amp;&amp; Attack &gt; 0{AttackScriptExt(global.SporeSA,sprSpore,"SporeV",global.AvAttack1CD,global.AvAttackMCD,1,false,-2);}
 </string>
           </argument>
         </arguments>

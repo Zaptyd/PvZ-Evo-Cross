@@ -50,7 +50,7 @@
             <kind>1</kind>
             <string>CoolDown -= (CoolDown &gt; 0) * (global.DayTime &lt;= 1);
 
-if CoolDown &lt;= 0{CoolDown = random_range(1000,1030);instance_create(random_range(global.MinSun,view_wview-100),-16,objSun);}
+if CoolDown &lt;= 0{CoolDown = random_range(860,800);instance_create(random_range(global.MinSun,view_wview-100),-16,objSun);}
 </string>
           </argument>
         </arguments>

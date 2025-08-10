@@ -26,8 +26,6 @@
           <argument>
             <kind>1</kind>
             <string>//image_speed = BaseIS *(Sleep/2 + 1) + (sprite_index == (asset_get_index(BaseSpr + "Attack"))) * 0.1;
-
-
 AttackScript(global.AvAttack1CD,global.AvAttackMCD);
 
 

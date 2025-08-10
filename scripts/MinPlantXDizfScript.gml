@@ -1,1 +1,1 @@
-MinPlantXDif = floor(floor(argument0-1 - MinPlantX+global.XGrid)/global.XGrid);
+MinPlantXDif = floor(floor(argument0-1 - global.MinPlantX+global.XGrid)/global.XGrid);
